@@ -3,19 +3,52 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>끝말잇기 게임-JavaScript</title>
 </head>
 <body>
-    <div><span id=""order">1</span> player</div>
+    <div>Now turn = <span id="order">1</span> Player</div>
     <div>Word: <span id="word"></span></div>
     <input type="text">
     <button>Submit</button>
     <script>
-        const number = parseInt(prompt('How many player?'), 10);
-        alert(number);
-        const yesOrNo = confirm('It is right?');
-        const $button = document.querySelector('button');
-        const $answer = document.querySelector('#word');
+        let     number; // 플레이어 수
+        let     word;   // 제시어
+        let     newword;    //  새로 입력받은 단어
+        const   $word = document.querySelector('#word');
+        const   $order = document.querySelector('#order');
+        let     order = Number($order.textContent);
+        const   $input = document.querySelector('input');
+        const   onInput = (event) => {
+            newword = event.target.value;
+        }
+        const   onClickButton = () => { // 제시어가 없거나 맞는 단어 입력 시
+            if ((!word || word[word.length - 1] === newword[0]) && word != newword)
+            {
+                word = newword;
+                $input.value = '';
+                $word.textContent = word;
+                order += 1;
+                if (order === number + 1)
+                    order = 1;
+                $order.textContent = order;
+            }
+            else   // 오답
+                alert("Wrong Answer!");
+            $input.focus();
+        }
+        while (true)
+        {
+            number = Number(prompt('How many player?'), 10);
+            if (number <= 0 || number !== parseInt(number))
+                continue;
+            number = parseInt(number);
+            alert("Number of players = " + number);
+            const yesOrNo = confirm('It is right?');
+            if (yesOrNo === true)
+                break;
+        }
+        $input.addEventListener('input', onInput);
+        document.querySelector('button').addEventListener('click', onClickButton);
     </script>
 </body>
 </html>
